@@ -4,7 +4,6 @@ const cors = require("cors");
 const app = express();
 const userRoutes = require("./routes/userRoute");
 const inventoryRoutes = require("./routes/inventoryRoute");
-const inventoryLogRoutes = require("./routes/inventoryLogsRoute");
 const categoryRoutes = require("./routes/categoryRoute");
 const supplierRoutes = require("./routes/supplierRoute");
 
@@ -23,7 +22,6 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes);
 app.use("/inventory", inventoryRoutes);
-app.use("/inventory-logs", inventoryLogRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/suppliers", supplierRoutes);
 
