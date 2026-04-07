@@ -62,8 +62,7 @@ exports.updateUserPassword = async (userId, currentPassword, newPassword) => {
     console.error('Database Error:', err);
     throw err;
   }
-
-}
+};
 
 exports.loginUser = async (username, password) => {
     try {
