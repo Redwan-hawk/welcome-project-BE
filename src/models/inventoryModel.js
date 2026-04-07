@@ -27,7 +27,7 @@ exports.getInventoryByCategoryID = async (categoryId) => {
 
 exports.searchInventoryByName = async (searchTerm) => {
     const result = await pool.query(
-        "SELECT * FROM inventory WHERE inventory_name LIKE $1",
+        "SELECT * FROM inventory WHERE inventory_name ILIKE $1",
         [`%${searchTerm}%`]
     );
 
