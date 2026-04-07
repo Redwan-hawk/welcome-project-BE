@@ -6,6 +6,7 @@ const userRoutes = require("./routes/userRoute");
 const inventoryRoutes = require("./routes/inventoryRoute");
 const categoryRoutes = require("./routes/categoryRoute");
 const supplierRoutes = require("./routes/supplierRoute");
+const dashboardController = require("./controllers/dashboardController");
 
 app.use(cors());
 app.use(express.json());
