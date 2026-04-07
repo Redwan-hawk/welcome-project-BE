@@ -47,10 +47,18 @@ exports.getTotalInventoryQuantity = async () => {
 exports.getLowStockItems = async (threshold) => {
     try {
         const res = await pool.query(`
-            SELECT inventory_id, inventory_name, inventory_quantity, inventory_location
-            FROM inventory
-            WHERE inventory_quantity < $1
-            AND deleted_at IS NULL
+            SELECT i.inventory_id, 
+                   i.inventory_name, 
+                   i.inventory_quantity, 
+                   i.inventory_location,
+                   s.supplier_name,
+                   c.category_name
+            FROM inventory i
+            LEFT JOIN supplier s ON i.supplier_id = s.supplier_id
+            LEFT JOIN category c ON i.category_id = c.category_id
+            WHERE i.inventory_quantity < $1
+            AND i.deleted_at IS NULL
+            ORDER BY i.inventory_quantity ASC
         `, [threshold]);
         return res.rows;
     } catch (err) {
