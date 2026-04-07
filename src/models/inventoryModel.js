@@ -56,6 +56,7 @@ exports.getInventoryByCategoryID = async (categoryId) => {
         console.error('Error fetching inventory by category:', err);
         throw err;
     }
+}
 };
 
 exports.getLowStockCount = async () => {
@@ -71,6 +72,8 @@ exports.getLowStockCount = async () => {
         console.error('Error getting low stock count:', err);
         throw err;
     }
+};
+
 exports.searchInventoryByName = async (searchTerm) => {
     const result = await pool.query(
         "SELECT * FROM inventory WHERE inventory_name ILIKE $1",
@@ -78,4 +81,5 @@ exports.searchInventoryByName = async (searchTerm) => {
     );
 
     return result.rows;
+}
 };
