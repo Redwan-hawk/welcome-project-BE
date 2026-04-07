@@ -2,6 +2,10 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+const userRoutes = require("./routes/userRoute");
+const inventoryRoutes = require("./routes/inventoryRoute");
+const categoryRoutes = require("./routes/categoryRoute");
+const supplierRoutes = require("./routes/supplierRoute");
 
 app.use(cors());
 app.use(express.json());
@@ -15,5 +19,10 @@ app.get("/health", (req, res) => {
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Logistics WebApp API is running!" });
 });
+
+app.use("/users", userRoutes);
+app.use("/inventory", inventoryRoutes);
+app.use("/categories", categoryRoutes);
+app.use("/suppliers", supplierRoutes);
 
 module.exports = app;
