@@ -7,4 +7,6 @@ router.get("/:id", userController.getUserById);
 router.put("/:id", userController.updateUserInfo);
 router.put("/:id/password", userController.updateUserPassword);
 
+router.post("/", userController.loginUser);
+
 module.exports = router;
