@@ -60,3 +60,15 @@ exports.searchInventoryByName = async (req, res) => {
         );
     }
 };
+
+exports.getDiscontinuedItems = async (req, res) => {
+    try {
+        const discontinuedItems = await inventoryModel.getDiscontinuedItems();
+        res.status(200).json(discontinuedItems);
+    } catch (err) {
+        console.error('Error fetching discontinued items:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        console.log(`[${new Date().toISOString()}] GET /api/inventory/discontinued - Completed`);
+    }
+};
