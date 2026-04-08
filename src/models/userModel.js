@@ -23,7 +23,7 @@ exports.getUserById = async (userId) => {
 exports.updateUserInfo = async (userId, name, email) => {
     try {
         const res = await pool.query(
-            'UPDATE users SET username = $1, user_email = $2 WHERE user_id = $3',
+            'UPDATE users SET username = $1, user_email = $2, updated_at = NOW() WHERE user_id = $3',
             [name, email, userId]
         );
         return res;
@@ -56,7 +56,7 @@ exports.updateUserPassword = async (userId, currentPassword, newPassword) => {
 
     // 3. Update to the new password
     await pool.query(
-      'UPDATE users SET user_password = $1 WHERE user_id = $2',
+      'UPDATE users SET user_password = $1, updated_at = NOW() WHERE user_id = $2',
       [newPassword, userId]
     );
 
