@@ -126,9 +126,9 @@ exports.searchInventoryByName = async (searchTerm) => {
             [`%${searchTerm}%`]
         );
 
-        return result.rows;
-    } catch (err) {
-        console.error('Error searching inventory by name:', err);
+    return result.rows;
+    }catch (err) {
+        console.error('Error getting low stock count:', err);
         throw err;
     }
 };

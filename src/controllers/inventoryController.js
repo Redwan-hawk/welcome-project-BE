@@ -12,24 +12,6 @@ exports.getAllInventoryItems = async (req, res) => {
     }
 };
 
-exports.getInventoryById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const inventoryItem = await inventoryModel.getInventoryById(id);
-        
-        if (!inventoryItem) {
-            return res.status(404).json({ error: 'Inventory item not found' });
-        }
-        
-        res.status(200).json(inventoryItem);
-    } catch (err) {
-        console.error('Error fetching inventory item:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
-    } finally {
-        console.log(`[${new Date().toISOString()}] GET /api/inventory/${req.params.id} - Completed`);
-    }
-};
-
 exports.getLowStockItems = async (req, res) => {
     try {
         const threshold = req.query.threshold || 10;
