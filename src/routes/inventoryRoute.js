@@ -4,5 +4,7 @@ const inventoryController = require("../controllers/inventoryController");
 
 router.get("/", inventoryController.getAllInventoryItems);
 router.get('/low-stock', inventoryController.getLowStockItems);
+router.get("/category/:category", inventoryController.getInventoryByCategoryID);
+router.get("/search", inventoryController.searchInventoryByName);
 
 module.exports = router;
