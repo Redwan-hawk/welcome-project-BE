@@ -97,7 +97,6 @@ exports.getInventoryByCategoryID = async (categoryId) => {
         console.error('Error fetching inventory by category:', err);
         throw err;
     }
-}
 };
 
 exports.getLowStockCount = async () => {
@@ -128,5 +127,8 @@ exports.searchInventoryByName = async (searchTerm) => {
         );
 
     return result.rows;
-}
+    }catch (err) {
+        console.error('Error getting low stock count:', err);
+        throw err;
+    }
 };
