@@ -1,4 +1,5 @@
 const pool = require('../db');
+const activityModel = require('../models/activityModel');
 
 exports.getAllUsers = async () => {
     try {
@@ -20,12 +21,15 @@ exports.getUserById = async (userId) => {
     }
 };
 
-exports.updateUserInfo = async (userId, name, email) => {
+exports.updateUserInfo = async (userId, name, email, profileImageUrl) => {
     try {
         const res = await pool.query(
-            'UPDATE users SET username = $1, user_email = $2, updated_at = NOW() WHERE user_id = $3',
-            [name, email, userId]
+            'UPDATE users SET username = $1, user_email = $2, profile_image_url = $3, updated_at = NOW() WHERE user_id = $4',
+            [name, email, profileImageUrl, userId]
         );
+
+        await activityModel.logActivity(userId, 'Update Profile');
+
         return res;
     } catch (err) {
         console.error('Error updating user:', err);
@@ -56,6 +60,8 @@ exports.updateUserPassword = async (userId, currentPassword, newPassword) => {
       'UPDATE users SET user_password = $1, updated_at = NOW() WHERE user_id = $2',
       [newPassword, userId]
     );
+
+    await activityModel.logActivity(userId, 'Change Password');
 
     return { status: 200 };
   } catch (err) {
