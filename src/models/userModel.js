@@ -1,4 +1,5 @@
 const pool = require('../db');
+const activityModel = require('../models/activityModel');
 
 exports.getAllUsers = async () => {
     try {
@@ -20,12 +21,15 @@ exports.getUserById = async (userId) => {
     }
 };
 
-exports.updateUserInfo = async (userId, name, email) => {
+exports.updateUserInfo = async (userId, name, email, profileImageUrl) => {
     try {
         const res = await pool.query(
-            'UPDATE users SET username = $1, user_email = $2, updated_at = NOW() WHERE user_id = $3',
-            [name, email, userId]
+            'UPDATE users SET username = $1, user_email = $2, profile_image_url = $3, updated_at = NOW() WHERE user_id = $4',
+            [name, email, profileImageUrl, userId]
         );
+
+        await activityModel.logActivity(userId, 'Update Profile');
+
         return res;
     } catch (err) {
         console.error('Error updating user:', err);
@@ -57,6 +61,8 @@ exports.updateUserPassword = async (userId, currentPassword, newPassword) => {
       [newPassword, userId]
     );
 
+    await activityModel.logActivity(userId, 'Change Password');
+
     return { status: 200 };
   } catch (err) {
     console.error('Database Error:', err);
@@ -73,6 +79,29 @@ exports.loginUser = async (username, password) => {
         return res.rows[0];
     } catch (err) {
         console.error('Error logging in user:', err);
+        throw err;
+    }
+};
+
+exports.isUsernameTaken = async (username) => {
+    const res = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+    return res.rowCount > 0;
+};
+
+exports.isEmailTaken = async (email) => {
+    const res = await pool.query('SELECT * FROM users WHERE user_email = $1', [email]);
+    return res.rowCount > 0;
+};
+
+exports.registerUser = async (username, email, password) => {
+    try {
+        const res = await pool.query(
+            'INSERT INTO users (username, user_email, user_password) VALUES ($1, $2, $3) RETURNING *',
+            [username, email, password]
+        );
+        return res.rows[0];
+    } catch (err) {
+        console.error('Error registering user:', err);
         throw err;
     }
 };
