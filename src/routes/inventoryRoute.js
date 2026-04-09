@@ -7,5 +7,8 @@ router.get('/low-stock', inventoryController.getLowStockItems);
 router.get("/category/:category", inventoryController.getInventoryByCategoryID);
 router.get("/search", inventoryController.searchInventoryByName);
 router.get('/discontinued', inventoryController.getDiscontinuedItems);
+router.get('/archived', inventoryController.getArchivedItems);
+router.get('/active', inventoryController.getActiveItems);
+
 
 module.exports = router;
