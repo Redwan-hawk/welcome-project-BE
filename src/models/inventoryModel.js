@@ -157,3 +157,57 @@ exports.getDiscontinuedItems = async () => {
         throw err;
     }
 };
+
+
+
+exports.getArchivedItems = async () => {
+    try {
+        const res = await pool.query(`
+            SELECT 
+                i.inventory_id,
+                i.inventory_name,
+                i.inventory_quantity,
+                i.inventory_location,
+                i.inventory_status,
+                COALESCE(s.supplier_name, 'Unknown') as supplier_name,
+                COALESCE(c.category_name, 'Unknown') as category_name
+            FROM inventory i
+            LEFT JOIN supplier s ON i.supplier_id = s.supplier_id
+            LEFT JOIN category c ON i.category_id = c.category_id
+            WHERE i.inventory_status = 'Archived'
+            AND i.deleted_at IS NULL
+            ORDER BY i.inventory_name ASC
+        `);
+        return res.rows;
+    } catch (err) {
+        console.error('Error fetching archived items:', err);
+        throw err;
+    }
+};
+
+
+
+exports.getActiveItems = async () => {
+    try {
+        const res = await pool.query(`
+            SELECT 
+                i.inventory_id,
+                i.inventory_name,
+                i.inventory_quantity,
+                i.inventory_location,
+                i.inventory_status,
+                COALESCE(s.supplier_name, 'Unknown') as supplier_name,
+                COALESCE(c.category_name, 'Unknown') as category_name
+            FROM inventory i
+            LEFT JOIN supplier s ON i.supplier_id = s.supplier_id
+            LEFT JOIN category c ON i.category_id = c.category_id
+            WHERE i.inventory_status = 'Active'
+            AND i.deleted_at IS NULL
+            ORDER BY i.inventory_name ASC
+        `);
+        return res.rows;
+    } catch (err) {
+        console.error('Error fetching active items:', err);
+        throw err;
+    }
+};
