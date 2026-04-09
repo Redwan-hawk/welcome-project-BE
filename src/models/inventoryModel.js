@@ -169,6 +169,9 @@ exports.getArchivedItems = async () => {
                 i.inventory_quantity,
                 i.inventory_location,
                 i.inventory_status,
+                i.created_at,
+                i.updated_at,
+                i.deleted_at,
                 COALESCE(s.supplier_name, 'Unknown') as supplier_name,
                 COALESCE(c.category_name, 'Unknown') as category_name
             FROM inventory i
@@ -196,6 +199,9 @@ exports.getActiveItems = async () => {
                 i.inventory_quantity,
                 i.inventory_location,
                 i.inventory_status,
+                i.created_at,
+                i.updated_at,
+                i.deleted_at,
                 COALESCE(s.supplier_name, 'Unknown') as supplier_name,
                 COALESCE(c.category_name, 'Unknown') as category_name
             FROM inventory i
