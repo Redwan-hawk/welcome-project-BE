@@ -84,3 +84,44 @@ exports.loginUser = async (req, res) => {
     res.status(401).json({ error: 'Invalid username or password' });
   }
 };
+
+exports.validateRegistration = async (req, res, next) => {
+    const { username, email, password } = req.body;
+
+    if (!username || !email || !password) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // 2. Email format check (Regex)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    try {
+        if (await userModel.isUsernameTaken(username)) {
+            return res.status(409).json({ error: 'Username is already taken' });
+        }
+
+        if (await userModel.isEmailTaken(email)) {
+            return res.status(409).json({ error: 'Email is already registered' });
+        }
+
+        // If all checks pass, move to the controller
+        next();
+    } catch (err) {
+        res.status(500).json({ error: 'Validation error' });
+    }
+};
+
+exports.registerUser = async (req, res) => {
+  const { username, email, password } = req.body;
+
+  try {
+    const newUser = await userModel.registerUser(username, email, password);
+    res.status(201).json(newUser);
+  } catch (err) {
+    console.error('Error registering user:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
