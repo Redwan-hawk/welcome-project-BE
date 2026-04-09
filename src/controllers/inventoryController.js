@@ -72,3 +72,31 @@ exports.getDiscontinuedItems = async (req, res) => {
         console.log(`[${new Date().toISOString()}] GET /api/inventory/discontinued - Completed`);
     }
 };
+
+
+
+exports.getArchivedItems = async (req, res) => {
+    try {
+        const archivedItems = await inventoryModel.getArchivedItems();
+        res.status(200).json(archivedItems);
+    } catch (err) {
+        console.error('Error fetching archived items:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        console.log(`[${new Date().toISOString()}] GET /api/inventory/archived - Completed`);
+    }
+};
+
+
+
+exports.getActiveItems = async (req, res) => {
+    try {
+        const activeItems = await inventoryModel.getActiveItems();
+        res.status(200).json(activeItems);
+    } catch (err) {
+        console.error('Error fetching active items:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        console.log(`[${new Date().toISOString()}] GET /api/inventory/active - Completed`);
+    }
+};
