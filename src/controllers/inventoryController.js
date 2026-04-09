@@ -90,7 +90,7 @@ exports.getDashboardStats = async (req, res) => {
     } catch (err) {
         console.error('Error fetching dashboard stats:', err);
         res.status(500).json({ error: 'Internal Server Error' });
-
+    }};
 
 exports.getArchivedItems = async (req, res) => {
     try {
