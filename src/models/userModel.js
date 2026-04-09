@@ -77,6 +77,16 @@ exports.loginUser = async (username, password) => {
     }
 };
 
+exports.isUsernameTaken = async (username) => {
+    const res = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+    return res.rowCount > 0;
+};
+
+exports.isEmailTaken = async (email) => {
+    const res = await pool.query('SELECT * FROM users WHERE user_email = $1', [email]);
+    return res.rowCount > 0;
+};
+
 exports.registerUser = async (username, email, password) => {
     try {
         const res = await pool.query(
