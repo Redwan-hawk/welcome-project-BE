@@ -33,8 +33,8 @@ exports.getUserById = async (req, res) => {
 exports.updateUserInfo = async (req, res) => {
   try {
     const userId = req.params.id;
-    const { user_name, user_email, user_profileImageUrl } = req.body;
-    const result = await userModel.updateUserInfo(userId, user_name, user_email, user_profileImageUrl);
+    const { user_name, user_email, user_profileImageUrl, user_bio } = req.body;
+    const result = await userModel.updateUserInfo(userId, user_name, user_email, user_profileImageUrl, user_bio);
     if (result.rowCount === 0) {
       res.status(404).json({ error: 'User not found' });
     } else {
