@@ -76,3 +76,16 @@ exports.loginUser = async (username, password) => {
         throw err;
     }
 };
+
+exports.registerUser = async (username, email, password) => {
+    try {
+        const res = await pool.query(
+            'INSERT INTO users (username, user_email, user_password) VALUES ($1, $2, $3) RETURNING *',
+            [username, email, password]
+        );
+        return res.rows[0];
+    } catch (err) {
+        console.error('Error registering user:', err);
+        throw err;
+    }
+};
