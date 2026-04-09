@@ -21,11 +21,11 @@ exports.getUserById = async (userId) => {
     }
 };
 
-exports.updateUserInfo = async (userId, name, email, profileImageUrl) => {
+exports.updateUserInfo = async (userId, name, email, profileImageUrl, userBio) => {
     try {
         const res = await pool.query(
-            'UPDATE users SET username = $1, user_email = $2, profile_image_url = $3, updated_at = NOW() WHERE user_id = $4',
-            [name, email, profileImageUrl, userId]
+            'UPDATE users SET username = $1, user_email = $2, profile_image_url = $3, user_bio = $4, updated_at = NOW() WHERE user_id = $5',
+            [name, email, profileImageUrl, userBio, userId]
         );
 
         await activityModel.logActivity(userId, 'Update Profile');
