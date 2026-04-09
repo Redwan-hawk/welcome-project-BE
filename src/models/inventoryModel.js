@@ -67,16 +67,17 @@ exports.getLowStockItems = async (threshold) => {
     }
 };
 
-exports.getTotalInventoryQuantity = async () => {
+exports.getTotalInventoryCount = async () => {
     try {
         const res = await pool.query(`
-            SELECT COALESCE(SUM(inventory_quantity), 0) as total
+            SELECT COUNT(*) AS total
             FROM inventory
             WHERE deleted_at IS NULL
         `);
         return parseInt(res.rows[0].total);
     } catch (err) {
-        console.error('Error getting total inventory quantity:', err);
+        console.error('Error getting total inventory count:', err);
+        throw err;
     }
 };
 

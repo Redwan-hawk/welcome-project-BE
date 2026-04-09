@@ -3,10 +3,10 @@ const categoryModel = require('../models/categoryModel');
 
 exports.getDashboardStats = async (req, res) => {
     try {
-        const totalItems = await inventoryModel.getTotalInventoryQuantity();
+        const totalItems = await inventoryModel.getTotalInventoryCount();
         const lowStock = await inventoryModel.getLowStockCount();
         const categoriesCount = await categoryModel.getCategoriesCount();
-        const checkedOut = 0; // Placeholder
+        const checkedOut = 0; 
         
         res.status(200).json({
             totalItems: totalItems,
