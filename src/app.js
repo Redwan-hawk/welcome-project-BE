@@ -7,6 +7,7 @@ const inventoryRoutes = require("./routes/inventoryRoute");
 const categoryRoutes = require("./routes/categoryRoute");
 const supplierRoutes = require("./routes/supplierRoute");
 const dashboardController = require('../src/controllers/dashboardController');
+const activityRoutes = require('./routes/activityRoute');
 
 app.use(cors());
 app.use(express.json());
@@ -27,5 +28,6 @@ app.use("/users", userRoutes);
 app.use("/inventory", inventoryRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/suppliers", supplierRoutes);
+app.use("/activities", activityRoutes);
 
 module.exports = app;
