@@ -1,4 +1,5 @@
 const userModel = require('../models/userModel');
+const jwtUtils = require('../middleware/jwtMiddleware');
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -50,7 +51,7 @@ exports.updateUserInfo = async (req, res) => {
 exports.updateUserPassword = async (req, res) => {
   try {
     const userId = req.params.id;
-    // Get both passwords from the request body
+
     const { currentPassword, newPassword } = req.body;
 
     const result = await userModel.updateUserPassword(userId, currentPassword, newPassword);
@@ -78,7 +79,15 @@ exports.loginUser = async (req, res) => {
 
   try {
     const user = await userModel.loginUser(username, password);
-    res.status(200).json(user);
+
+    const payload = {
+      userId: user.user_id,
+      username: username,
+    };
+
+    const token = jwtUtils.generateToken(payload);
+
+    res.status(200).json({ ...user, token });
   } catch (err) {
     console.error('Error logging in user:', err);
     res.status(401).json({ error: 'Invalid username or password' });
@@ -92,7 +101,6 @@ exports.validateRegistration = async (req, res, next) => {
         return res.status(400).json({ error: 'All fields are required' });
     }
 
-    // 2. Email format check (Regex)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         return res.status(400).json({ error: 'Invalid email format' });
@@ -107,7 +115,6 @@ exports.validateRegistration = async (req, res, next) => {
             return res.status(409).json({ error: 'Email is already registered' });
         }
 
-        // If all checks pass, move to the controller
         next();
     } catch (err) {
         res.status(500).json({ error: 'Validation error' });
